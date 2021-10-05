@@ -1,0 +1,80 @@
+import 'package:clock_app/constants/theme_data.dart';
+import 'package:clock_app/data.dart';
+import 'package:clock_app/enums.dart';
+import 'package:clock_app/models/menu_info.dart';
+import 'package:clock_app/views/alarm_page.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: CustomColors.pageBackgroundColor,
+      body: Column(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: menuItems
+                .map((currentMenuInfo) => Padding(
+                      padding: EdgeInsets.only(top: 70),
+                      child: buildMenuButton(currentMenuInfo),
+                    ))
+                .toList(),
+          ),
+          Expanded(
+            child: Consumer<MenuInfo>(
+              builder: (BuildContext context, MenuInfo value, Widget child) {
+                if (value.menuType == MenuType.alarm)
+                  return AlarmPage();
+                else
+                  return Container();
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildMenuButton(MenuInfo currentMenuInfo) {
+    return Consumer<MenuInfo>(
+      builder: (BuildContext context, MenuInfo value, Widget child) {
+        return FlatButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 0),
+          color: currentMenuInfo.menuType == value.menuType
+              ? CustomColors.menuBackgroundColor
+              : Colors.transparent,
+          onPressed: () {
+            var menuInfo = Provider.of<MenuInfo>(context, listen: false);
+            menuInfo.updateMenu(currentMenuInfo);
+          },
+          child: Column(
+            children: <Widget>[
+              Image.asset(
+                currentMenuInfo.imageSource,
+                scale: 1.5,
+              ),
+              SizedBox(height: 16),
+              Text(
+                currentMenuInfo.title ?? '',
+                style: TextStyle(
+                    fontFamily: 'avenir',
+                    color: CustomColors.primaryTextColor,
+                    fontSize: 14),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}

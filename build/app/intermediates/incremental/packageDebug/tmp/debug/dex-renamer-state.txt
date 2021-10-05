@@ -1,0 +1,4 @@
+#Tue Oct 05 16:21:11 IST 2021
+base.0=C\:\\Users\\Saravana\\Desktop\\flutter alarm\\flutter_alarm_clock\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
